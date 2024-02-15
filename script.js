@@ -4,6 +4,11 @@ const itemList = document.getElementById('item-list');
 const clearBtn = document.getElementById('clear');
 const itemFilter = document.getElementById('filter');
 
+function displayItems(){
+    const itemsFromStorage = getItemsFromStorage();
+    itemsFromStorage.forEach((item) => addIemToDOM(item));
+    checkUI();
+}
 
 function onAddItemSubmit(e){
     e.preventDefault();
@@ -48,6 +53,17 @@ function addIemToDOM(item){
 }
 
 function addItemToStorage(item){
+    
+    const itemsFromStorage = getItemsFromStorage();
+
+    // Add new item to array
+    itemsFromStorages.push(item);
+
+    // Convert to JSON string and set to local storage
+    localStorage.setItem('items',JSON.stringify(itemFromStorage));
+}
+
+function getItemsFromStorage(){
     let itemFromStorage;
 
     if(localStorage.getItem('items')=== null){
@@ -55,11 +71,8 @@ function addItemToStorage(item){
     }else{
         itemFromStorage = JSON.parse(localStorage.getItem('items'));
     }
-    // Add new item to array
-    itemFromStorage.push(item);
 
-    // Convert to JSON string and set to local storage
-    localStorage.setItem('items',JSON.stringify(itemFromStorage));
+    return itemFromStorage;
 }
 
 function createIcon(classes) {
@@ -122,4 +135,6 @@ itemForm.addEventListener('submit',onAddItemSubmit);
 itemList.addEventListener('click',removeItem)
 clearBtn.addEventListener('click',clearItems);
 itemFilter.addEventListener('input',filterItems);
+document.addEventListener('DOMContentLoaded',displayItems);
 checkUI();
+
